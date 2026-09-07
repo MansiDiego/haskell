@@ -1,0 +1,4 @@
+--OPERACIONES CON LISTAS--
+--head :: [a] Devuelve el primer elemento de una lista
+--tail :: [a] Devuelve la lista sin el primer elemento
+-- (:) :: a -> [a] Une listas, el lado izquiero debe ser un elemento y el derecho una lista 
