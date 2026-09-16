@@ -3,6 +3,45 @@
 longitud :: [t] -> Integer 
 longitud []    = 0
 longitud (x:xs) = 1 + longitud xs
+--LAS COMILLAS SIMPLES 'char' son para un unico caracter, no es valido pasar 'hola' y las comillas "hola" toman una cadena de char y lo vuelven un solo elemento(por lo tanto si le paso ["h", "o", "l"] labura como las comillas simples y devuelve 3, pero si le paso "hol" devuelve 1, xq toma la cadena como un solo elemento)
+
+--1.B
+--Dada una lista de elementos devuelve el ultimo elemento, la especificacion es |s| - 1, que lo que estaria indicando es que es el ultimo elemento, es decir dame el elemento empezando desde el final
+ultimo :: [e] -> e
+ultimo [e]     = e
+ultimo (x : xs) = ultimo xs
+
+--1.C
+--Principio labura con una lista de tipo T y devuelve otra lista de tipo T.
+principio :: [t] -> [t]
+principio [x] = []
+principio (x:xs) = x : principio xs
+
+
+---1.D
+--REVERSO, tiene todos los elementos que "S" pero en orden invertido
+reverso :: [t] -> [t]
+reverso []       = [] --seria mi caso base
+reverso (x : xs) = reverso xs ++ [x] 
+-- ++ Concatena 2 listas, y [x] es la lista unitaria
+
+
+
+{-EJERCICIO 2.1-}
+--dada un elemento "e" y una lista [t] devolver bool(segun si pertenece o no)
+
+pertenece :: (Eq t) => t -> [t] -> Bool 
+pertenece t []       = False 
+pertenece t (x : xs) | t == x    = True
+                     | otherwise = pertenece t xs 
+
+
+
+{-EJERCICIO 2.2-}
+todosIguales :: (Eq t) => t -> [t] -> Bool 
+todosIguales t []       = True 
+todosIguales t (x : xs) | t /= x    = False
+                     | otherwise = todosIguales t xs 
 
 
 
@@ -28,27 +67,7 @@ longitud (x:xs) = 1 + longitud xs
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+{-
 ---Problema en cuestion;
 {-EJERCICIO 2.5-}
 quitar :: (Eq x) => x -> [x] -> [x]
@@ -103,3 +122,5 @@ enLoscontactos :: Nombre -> ContactosTel -> Bool
 enLoscontactos n ( _ : _ ) = False
 {--enLoscontactos n (x : xs) | n == Contacto = True
 | otherwise = enLoscontactos n (x : xs) --}
+
+--}
