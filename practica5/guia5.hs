@@ -20,9 +20,9 @@ principio (x:xs) = x : principio xs
 
 ---1.D
 --REVERSO, tiene todos los elementos que "S" pero en orden invertido
-reverso :: [t] -> [t]
-reverso []       = [] --seria mi caso base
-reverso (x : xs) = reverso xs ++ [x] 
+reverso1 :: [t] -> [t]
+reverso1 []       = [] --seria mi caso base
+reverso1 (x : xs) = reverso1 xs ++ [x] 
 -- ++ Concatena 2 listas, y [x] es la lista unitaria
 
 
@@ -37,90 +37,329 @@ pertenece t (x : xs) | t == x    = True
 
 
 
-{-EJERCICIO 2.2-}
-todosIguales :: (Eq t) => t -> [t] -> Bool 
-todosIguales t []       = True 
-todosIguales t (x : xs) | t /= x    = False
-                     | otherwise = todosIguales t xs 
+--2.2
+--Todos iguales que dada una lista de elementos, devuelve true si y solo si todos sus elementos son iguales.
+todosIguales :: (Eq t) => [t] -> Bool
+todosIguales [x]     = True
+todosIguales []      =  True
+todosIguales (x:xs) | pertenece x xs = todosIguales xs
+                    | otherwise      = False
+
+
+--2.3
+--devuelve falso si hay 2 elementos repetidos en la lista, y devuelve true si todos los elementos son distintos
+todosDistintos :: (Eq t) => [t] -> Bool
+todosDistintos [x] = True
+todosDistintos []  = True
+todosDistintos (x : xs) | pertenece x xs = False
+                        | otherwise      = todosDistintos xs
 
 
 
+--2.4
+-- La idea es que si hay al menos un elemento en la lista que aparece 2 veces entonces devolvemos True, si no hay ningun repetido devolvemos false
+hayRepetidos :: (Eq t) => [t] -> Bool
+hayRepetidos []  = False
+hayRepetidos (x : xs) | pertenece x xs = True
+                      | otherwise      = hayRepetidos xs
 
 
 
+--2.5--
+--Dado un elemento "e" y una lista elimina la primer aparicion de e en la lista s (si es que aparece e en la lista s)
+quitar :: (Eq t) => t -> [t] -> [t]
+quitar x []       = [] 
+quitar x (y : ys) |  x == y   = ys
+                  | otherwise = y : quitar x ys 
+
+
+--2.6--
+--Dado un elemento "e" y una lista s, elimna toda las apariciones de e en la lista s(si es que e aparece en la lista, sino devuelve la lista tal cual esta)
+quitartodosiguales :: (Eq t) => t -> [t] -> [t]
+quitartodosiguales x []       = [] 
+quitartodosiguales x (y : ys) | x == y    = quitartodosiguales x (quitar x (y : ys))
+                              | otherwise = y : quitartodosiguales x ys
+
+--2.7--
+--Dada una lista elimina repetidos y devuelve otra lista, dejando a elementos que no se repiten--
+eliminarRepetidos :: (Eq t) => [t] -> [t]
+eliminarRepetidos (x : xs) | (x:xs) == [x]  = [x]
+                           | hayRepetidos (x:xs) = eliminarRepetidos xs
+                           | otherwise           = x : eliminarRepetidos xs
+
+
+--2.8--
+--mismos elementos, que dada dos listas devuelve verdadero sí y solamente sí ambas listas contienen los mismos elementos sin tener en cuenta la cantidad de repeticiones.
+mismosElementos :: (Eq t) => [t] -> [t] -> Bool
+mismosElementos xs ts  = contenidadEn xs ts && contenidadEn ts xs
+
+contenidadEn :: (Eq t) => [t] -> [t] -> Bool
+contenidadEn [] _        = True
+contenidadEn (x : xs) ts = pertenece x ts && contenidadEn xs ts  
+---Voy a usar pertenece, que recibe un elemento y una lista y me devuelve un bool, depende lo que corresponda--
+--Observar que al pensar modularmente los problemas de listas salen en 2 patadas...--
 
 
 
+---AGAIN mismosELementos(metodo guardas):--
+mismosElementoss :: (Eq t) => [t] -> [t] -> Bool
+mismosElementoss xs ts | contenida xs ts  && contenida ts xs = True
+                       | otherwise                            = False
+
+contenida :: (Eq t) => [t] -> [t] -> Bool
+contenida [] _ = True
+contenida (x : xs) ts | pertenece x ts = contenida xs ts
+                      | otherwise      = False
+
+
+{-EJERCICIO 2.9 -}
+capicuaString :: (Eq t) => [t] -> Bool
+capicuaString xs | reverso xs == xs = True
+                 | otherwise        = False
+                
+
+reverso :: (Eq t) => [t] -> [t] 
+reverso [] = []
+reverso (x:xs) = reverso xs ++ [x] 
 
 
 
+{-EJERCICIO 3-}
+--dada una lista, devuelve la suma de sus elementos--
+sumatoria :: [Integer] -> Integer
+sumatoria [] = 0
+sumatoria (x:xs) = sumatoria xs + x 
 
 
+--3.2--
+--Productoria, dada una lista devuelve el producto de sus componentes--
+productoria :: [Integer] -> Integer 
+productoria (x:xs) | (x:xs) == [x] = x
+productoria (x:xs) | (x:xs) /= []  = x * productoria xs 
 
 
-
-
-
-
-
-
-
-
-
-{-
----Problema en cuestion;
-{-EJERCICIO 2.5-}
-quitar :: (Eq x) => x -> [x] -> [x]
-quitar n [] = []
-quitar n (x: xs) | n == x = (x:xs)
-| otherwise = x : quitar n xs
-
-
-{--EJERCICIO 3.3--}
-
-
+--3.3--
 maximo :: [Integer] -> Integer
 maximo [x] = x
-maximo (x : y : xs) | x > y = maximo(x : xs)
-| otherwise = maximo (y : xs)
+maximo (x : xs) | x > maximo xs = x
+                | otherwise     = maximo xs
+
+
+--3.4--
+sumarN :: Integer -> [Integer] -> [Integer] 
+sumarN n [x] = [n + x]
+sumarN n [] = []
+sumarN n (x:xs) = (n + x) : sumarN n xs
+
+--3.5--
+sumarElprimero :: [Integer] -> [Integer]
+sumarElprimero (s:xs) = (s+s) : sumarN s xs
+
+--3.6--
+{--
+SUTIL DIFERENCIA EN LA ESPECIFICACIÓN DE UN ELEMENTO DE LA LISTA: SI DIGO EL ELEMENTO EN POSICIÓN X => e[x]. 
+Si quiero mencionar el ultimo elemento perteneciente a un conjunto "e", entonces digo e[|e|-1] ya que todo lo que esta entre corchetes hace referencia a una posición en formato "indice(0=1, 1=2 y etc)", y siempre que tengamos |s| o |x| hace referencia a la longitud con lo que estamos trabajando, es importante a considerar cuando trabajamos con especificaciones mas complejas.--}
+
+sumarElultimo :: [Integer] -> [Integer]
+sumarElultimo xs = sumarN (ultimoElemento xs) xs 
+
+ultimoElemento :: [Integer] -> Integer 
+ultimoElemento [x] = x 
+ultimoElemento (x:xs) = ultimoElemento xs
+ 
+--3.7--
+--recibe una lista, y devuelve los elementos que son pares--
+pares :: [Integer] -> [Integer]
+pares [] = []
+pares (x:xs) | esPar x   = x : pares xs
+             | otherwise = pares xs
+
+
+esPar :: Integer -> Bool
+esPar n | mod n 2 == 0 = True
+        | otherwise    = False
+
+
+--3.8-- 
+--recibe una lista y me devuelve otra lista con todos los elemenentos que son multiplos de n y pertenece a la primer lista.
+multiplosDeN :: Integer -> [Integer] -> [Integer]
+multiplosDeN n [] = []
+multiplosDeN n (primerElemento : xs) | esMultiplode primerElemento n = primerElemento : multiplosDeN n xs
+                                     | otherwise                     = multiplosDeN n xs
+
+
+esMultiplode :: Integer -> Integer -> Bool
+esMultiplode x n | n == 0       = False
+                 | mod x n == 0 = True
+                 | otherwise    = False
 
 
 
-{--EJERCICIO 3.3 CON RECURSION MAS UNA AUXILIAR--}
-
-maximo2 :: [Integer] -> Integer
-maximo2 [x] = x
-maximo2 (x : xs) = maxi x (maximo2 xs)
-
-
-maxi :: Integer -> Integer -> Integer
-maxi x y | x > y = x
-| otherwise = y
-
-
-
-
-
-{-EJERCICIO 3.9-}
----
+--3.9--
+--ordenar, recibe una lista, y devuelve la lista ordenada de forma creciente 
 ordenar :: [Integer] -> [Integer]
-ordenar [] = []
-ordenar (x : xs) = ordenar (quitar (maximo (x : xs)) (x : xs)) ++ [maximo (x : xs)]
+ordenar [x] = [x]
+ordenar xs = ordenar (quitar (maximo xs) xs) ++ [maximo xs ] 
+
+--
 
 
-{-EJERCICIO 6-}
+--Sacar blancosRepetidos
+{--EJERCICIO 4.A--}
+sacarBlancosRepetidos ::  String -> String 
+sacarBlancosRepetidos []  = []
+sacarBlancosRepetidos [x] = [x]
+sacarBlancosRepetidos (cabeza: elementopostcabeza : cola) | cabeza == ' ' && elementopostcabeza == ' ' = sacarBlancosRepetidos (elementopostcabeza : cola)
+                                                          | otherwise                                  = cabeza : sacarBlancosRepetidos (elementopostcabeza : cola)
 
-type Texto = String
-type Nombre = Texto
-type Telefono = Texto
-type Contacto = (Nombre, Telefono)
-type ContactosTel = [Contacto]
 
---Implementar una funcion que me diga si una persona aparece en mi lista de contactos
 
-enLoscontactos :: Nombre -> ContactosTel -> Bool
-enLoscontactos n ( _ : _ ) = False
-{--enLoscontactos n (x : xs) | n == Contacto = True
-| otherwise = enLoscontactos n (x : xs) --}
+{--EJERCICIO 4.B--}
+--contar Palabras--
+contarPalabras :: String ->  Integer 
+contarPalabras [] = 0
+contarPalabras texto = contarPalabrasLimpias (limpiartexto texto)
 
+---hay que limpiar los espacios del principio o finales, tambien los espacios dobles "_,_" (suponiendo que los guiones bajos son espacios).
+limpiartexto :: String -> String 
+limpiartexto (x : xs) = sacarExtremosVacios (sacarBlancosRepetidos (x : xs))
+
+sacarInicio :: String -> String 
+sacarInicio (' ': xs) = xs
+sacarInicio (x  : xs) = (x:xs)
+
+sacarUltimoElementoVacio :: String -> String 
+sacarUltimoElementoVacio [x] = [x]
+sacarUltimoElementoVacio (x:xs) = reverso( sacarInicio (reverso(x : xs)) )
+
+sacarExtremosVacios :: String -> String 
+sacarExtremosVacios (x : xs) = sacarUltimoElementoVacio (sacarInicio (x:xs))
+
+--basta de auxiliares pfv
+contarPalabrasLimpias :: String -> Integer 
+contarPalabrasLimpias [x] | x /=' '   = 1
+                          | otherwise = 0
+contarPalabrasLimpias (x:xs) | x == ' '  = 1 + contarPalabrasLimpias xs
+                             | otherwise = contarPalabrasLimpias xs
+
+
+---
+{-4.c-}
+--dada una lista devuelve otra lista de listas con las palbras originales, por ejemplo recibe "mateo fulano mengano" devuelve ["mateo", "fulano", "mengano"]
+
+
+--
+palabras :: String -> [String] 
+palabras [] = []
+palabras (x:xs) = [primeraPalabra (x : xs)] ++ palabras (eliminaPrimerPalabra (x:xs))
+ 
+
+primeraPalabra :: String -> String
+{-- primeraPalabra (x:xs) | (x:xs) == [] = [] ESTO ES INCORRECTO, NUNCA SE LLEGA A EJECUTAR, DADO QUE POR DEFINICION (X:XS) TIENE ALMENOS UN ELEMENTO POR LO TANTO NUNCA VA  A PASAR QUE (X:XS) == [] DADO QUE YA ENTRA CON ALMENOS UN ELMENTO, Y TU RECURSIVIDAD SE LA PASA POR LOS HUEVOS.--}
+primeraPalabra [] = []                     
+primeraPalabra (x:xs) | x/=' '       = x : primeraPalabra xs
+                      | otherwise    = []
+
+
+eliminaPrimerPalabra :: String -> String
+eliminaPrimerPalabra [] = []
+eliminaPrimerPalabra (x:xs) | x == ' '     = xs
+                            | otherwise    = eliminaPrimerPalabra xs
+
+
+--4.D PALABRA MAS LARGA--
+
+palabraMasLarga :: String -> String
+palabraMasLarga [] = []
+palabraMasLarga [primera] = [primera]
+palabraMasLarga texto
+        | longitudDelString primeraP > longitudDelString mejorDelResto = primeraP
+        | otherwise = palabraMasLarga restoDeP
+        where 
+        primeraP      = primeraPalabra texto
+        restoDeP      = eliminaPrimerPalabra texto
+        mejorDelResto = palabraMasLarga restoDeP
+
+
+longitudDelString :: String -> Integer 
+longitudDelString [] = 0 
+longitudDelString (x:xs) | x /= ' '  = 1 + longitudDelString xs
+                         | otherwise = 0
+
+
+{-4.e-}
+
+aplanar :: [String] -> String
+aplanar [x] 
+        | [x] /= [" "] = x
+        | otherwise    = []
+aplanar (x:xs) 
+        | x /= " "   = x ++ aplanar xs
+        | otherwise  = aplanar xs
+
+
+{-4.F-}
+aplanarConBlancos1 :: [String] -> String 
+aplanarConBlancos1 []  = []
+aplanarConBlancos1 [x] = x 
+aplanarConBlancos1 (x:xs) = x ++ " " ++ aplanarConBlancos1 xs --Basicamente "x" representa el primer string
+
+
+{--
+aplanarConBlancos2 :: [[Char]] -> [Char]
+aplanarConBlancos2 []       = []
+aplanarConBlancos2 [p]      = p
+aplanarConBlancos2 (p : ps) = p ++ " " ++ aplanarConBlancos ps 
 --}
+--Basicamente "p" representa la primer lista de char y le suma un espacio y lo concatena con la cola aplicando la misma logica
+
+
+{-4.g-}
+
+f7 :: [[Char]] -> Integer -> [Char]
+f7 [] _        = []
+f7 [x] _       = x   --Donde x representa el primer elemento, pero quien seria el primer elemento? la primer lista de caracteres, que basicamente seria la primer palabra/string
+f7 (x : xs) 0  = aplanar (x:xs)
+f7 (x : xs) n  = x ++ nBlancos n ++ f7 xs n
+
+
+nBlancos :: Integer -> [Char]
+nBlancos 1 = " "
+nBlancos n = " " ++ nBlancos (n-1)
+           
+{-EJERCICIO 5.1-} 
+--SumaAcumulada
+        
+sumaAcumulada :: (Num t) => [t] -> [t]
+sumaAcumulada [] = []
+sumaAcumulada (x:xs) = x : sumadePosteriores x xs 
+
+
+sumadePosteriores :: (Num t) => t -> [t] -> [t]
+sumadePosteriores x [] = []
+sumadePosteriores x (y:xs) = x + y : sumadePosteriores numAcumulado xs
+        where 
+        numAcumulado = (x + y)
+
+
+{-EJERCICIO 5.2-} 
+descomponerEnPrimos :: [Integer] -> [[Integer]]
+descomponerEnPrimos [] = []
+descomponerEnPrimos (x:xs)
+         | x == 2            = [[2]] ++ descomponerEnPrimos xs 
+descomponerEnPrimos (x : xs) = [[2] ++ segundoElementoPrimobis 1 x] ++ descomponerEnPrimos xs
+
+
+--La idea es arrancar desde primo = 1
+segundoElementoPrimo :: Integer -> Integer -> Integer
+segundoElementoPrimo primo n | n == 3 = 3
+                             | 2 * primo == n = primo
+                             | otherwise = segundoElementoPrimo (primo + 1) n
+
+segundoElementoPrimobis :: Integer -> Integer -> [Integer]
+segundoElementoPrimobis primo n | n == 2 = [2]
+                                | n == 3 = [3]
+                                | 2 * primo == n = [primo]
+                                | otherwise      = segundoElementoPrimobis (primo + 1) n
+
+
