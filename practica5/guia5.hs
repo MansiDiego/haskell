@@ -363,3 +363,198 @@ segundoElementoPrimobis primo n | n == 2 = [2]
                                 | otherwise      = segundoElementoPrimobis (primo + 1) n
 
 
+
+
+
+{--EJERCICIO 6--}
+
+type Texto = [Char]
+type Nombre = Texto
+type Telefono = Texto
+type Contacto = (Nombre, Telefono)
+type ContactosTel = [Contacto]
+
+
+--6.a correcto
+enLoscontactos :: Nombre -> ContactosTel -> Bool
+enLoscontactos _ [] = False 
+enLoscontactos nombre (x:xs) 
+                | nombre == fst x = True
+                | otherwise       = enLoscontactos nombre xs 
+
+--6.b
+agregarContacto :: Contacto -> ContactosTel -> ContactosTel --ContactosTel es una lista de tuplas
+agregarContacto (nombre, telefono) (x:xs)
+                | enLoscontactos nombre (x:xs) = actualizaTelefono sinrepetidos (nombre, telefono)  
+                | otherwise = [(nombre, telefono)] ++ (x:xs) 
+        where
+        sinrepetidos = eliminarRepetidoss (x:xs) (nombre,telefono)
+
+            
+--aux
+actualizaTelefono :: ContactosTel -> Contacto -> ContactosTel
+actualizaTelefono (x:xs) (elNombre, elNumero) 
+                | enLoscontactos elNombre (x:xs) = [(elNombre, elNumero)] ++ (x:xs) 
+                | otherwise                      = [(elNombre, elNumero)] ++ (x:xs)
+
+--aux
+eliminarRepetidoss :: ContactosTel -> Contacto -> ContactosTel 
+eliminarRepetidoss [] _           = []
+eliminarRepetidoss (x:xs) (nombre, telefono)
+                | nombre == fst x = xs
+                | otherwise       = x : eliminarRepetidoss xs (nombre, telefono) 
+
+--6.c-- Pa ksa
+eliminarContacto :: Nombre -> ContactosTel -> ContactosTel 
+eliminarContacto _ []       = []
+eliminarContacto nombre (x:xs)
+                | nombre == fst x = xs
+                | otherwise       = x : eliminarContacto nombre xs
+
+
+
+
+
+
+
+{--EJERCICIO7--}
+
+type Identificacion = Integer
+type Ubicacion = Texto --Texto seria un String basicamente--
+type Estado = (Disponibilidad, Ubicacion)
+type Locker = (Identificacion, Estado)
+type MapaDeLockers = [Locker]
+type Disponibilidad = Bool    
+
+
+--7.1 Existencia--
+existeLocker :: Identificacion -> MapaDeLockers -> Bool
+existeLocker _ [] = False
+existeLocker numeroDeLocker (lockers : xs) 
+                | numeroDeLocker == fst lockers = True
+                | otherwise                     = existeLocker numeroDeLocker xs
+
+
+--7.2 Ubicacion del locker--
+ubicacionDelLocker :: Identificacion -> MapaDeLockers -> Ubicacion 
+ubicacionDelLocker numeroDeLocker (x:xs)
+                | existeLocker numeroDeLocker (x:xs) = posicionDelLocker numeroDeLocker (x:xs)                    ---que tiene que ser un string
+                | otherwise                          = "No existe ubicación para ese locker"
+
+
+--AUX Posición del locker
+posicionDelLocker :: Identificacion -> MapaDeLockers -> Ubicacion --Ya que lo que llega a esta funcion auxiliar son identificadores de lockers que existen.
+posicionDelLocker numeroDeLocker ((identificacion, (disponibilidad, ubicacion)): xs) 
+                | numeroDeLocker == identificacion = ubicacion
+                | otherwise                        = posicionDelLocker numeroDeLocker xs
+
+
+--7.3 Disponibilidad del Locker--
+estaDisponibleElLocker :: Identificacion -> MapaDeLockers -> Bool
+estaDisponibleElLocker numeroDeLocker (x:xs)
+                | existeLocker numeroDeLocker (x:xs) = disponibleLocker numeroDeLocker (x:xs)
+                | otherwise                          = False
+
+
+--AUX disponibilidad de lockers
+disponibleLocker :: Identificacion -> MapaDeLockers -> Bool
+disponibleLocker numeroDeLocker ((identificacion, (disponibilidad, ubicacion)): xs) 
+                | numeroDeLocker == identificacion = disponibilidad
+                | otherwise                        = disponibleLocker numeroDeLocker xs
+
+
+--7.4 Ocupar Locker, basicamente la cambia el estado de disponibilidad
+ocuparLocker :: Identificacion -> MapaDeLockers -> MapaDeLockers
+ocuparLocker numeroDeLocker (x:xs)
+                | existeLocker numeroDeLocker (x:xs) && estaDisponibleElLocker numeroDeLocker (x:xs) = cambiaDisponibilidad numeroDeLocker (x:xs)
+                | otherwise                                                                          = (x:xs)
+
+--AUX, recibe el identificador y la lista de lockers, y me devuelve la lista modificada
+cambiaDisponibilidad :: Identificacion -> MapaDeLockers -> MapaDeLockers --AUX: En esta auxiliar ya esta laburando con lockers existentes y "disponibles"
+cambiaDisponibilidad numeroDeLocker ((identificacion,(disponibilidad, ubicacion)) : xs)
+                | numeroDeLocker == identificacion = ((numeroDeLocker, (False, ubicacion)) : xs ) --Basicamente estoy rescribiendo el estado de disponibilidad
+                | otherwise                        = (identificacion, (disponibilidad, ubicacion)) : cambiaDisponibilidad numeroDeLocker xs
+
+---
+---
+
+{-EJERCICIO 8 MATRICES EN HASKELL-}
+--8.1 SUMA TOTAL
+
+sumaTotal :: [[Integer]] -> Integer 
+sumaTotal []     = 0
+sumaTotal (f:fs) = sumaDeLaFila f + sumaTotal fs
+
+sumaDeLaFila :: [Integer] -> Integer 
+sumaDeLaFila [] = 0
+sumaDeLaFila (x:xs) = x + sumaDeLaFila xs
+--LO QUE HICE BASICAMENTE FUE SOMAR LOS ELEMENTOS DE LA PRIMER FILA, E IR RECORRIENDO RECURSIVAMENTE EL RESTO DE LAS FILAS CON UNA AUXILIAR
+
+
+--8.2 CANTIDAD DE APARICIONES --
+
+cantidadDeAparicionesMatrices :: Integer -> [[Integer]] -> Integer 
+cantidadDeAparicionesMatrices e [] = 0
+cantidadDeAparicionesMatrices e (f:fs) = cantidadDeVecesss e f + cantidadDeAparicionesMatrices e fs
+
+
+cantidadDeVecesss :: Integer -> [Integer] -> Integer 
+cantidadDeVecesss _ [] = 0
+cantidadDeVecesss e (x:xs)
+        | e == x    = 1 + cantidadDeVecesss e xs
+        | otherwise = cantidadDeVecesss e xs
+
+
+--8.3--CANTIDAD DE APARICIONES DE LAS PALABRAS;
+contarPalabrasBis :: String ->  [[String]] -> Int
+contarPalabrasBis _ [] = 0
+contarPalabrasBis palabra (x:xs) = comparaPalabrasPorFilas palabra x + contarPalabrasBis palabra xs
+
+
+--AUX RECORRE POR FILAS
+comparaPalabrasPorFilas :: String -> [String] -> Int
+comparaPalabrasPorFilas _ [] = 0
+comparaPalabrasPorFilas palabra (x:xs) 
+                | comparaPalabras palabra (primeraPalabraBiss (x:xs)) = 1 + comparaPalabrasPorFilas palabra xs
+                | otherwise                                           = comparaPalabrasPorFilas palabra xs
+
+
+
+--aux recibe 2 strings, y devuelve true si son iguales
+comparaPalabras :: String -> String -> Bool
+comparaPalabras [] [] = True
+comparaPalabras [] _  = False
+comparaPalabras _ []  = False
+comparaPalabras (x:xs) (y:ys) 
+                | x == y = comparaPalabras xs ys
+                | otherwise = False
+
+--aux recibe una lista de strings, y me devuelve la pri9mer palabra, es decir el primer string
+primeraPalabraBiss :: [String] -> String 
+primeraPalabraBiss [] = []
+primeraPalabraBiss (x:xs)      
+                | x /=" "  && x/="" = x --DONDE X REPRESENTA EL PRIMER STRING, ES DECIR LA PRIMER PALABRA, " "PARA GARANTIZAR NO AGARRAR UN ESPACIO Y "" PARA GARANTIZAR NO AGARRAR EL VACIO
+                | otherwise = primeraPalabraBiss xs
+
+--8.4--
+cantidadDeApariciones2 :: (Eq t) => t -> [[t]] -> Integer 
+cantidadDeApariciones2 t [] = 0
+cantidadDeApariciones2 t (f:fs) = cantidadDeVecesss2 t f + cantidadDeApariciones2 t fs
+
+cantidadDeVecesss2 ::(Eq t) => t -> [t] -> Integer 
+cantidadDeVecesss2 _ [] = 0
+cantidadDeVecesss2 t (x:xs)
+        | t == x    = 1 + cantidadDeVecesss2 t xs
+        | otherwise = cantidadDeVecesss2 t xs
+
+
+--8.5--
+--funco en 12 mins"
+multiplicarPorEscalar :: Integer -> [[Integer]] -> [[Integer]]  
+multiplicarPorEscalar _ [] = []
+multiplicarPorEscalar lambda (f:fs) = [lambdaPorFila lambda f] ++ multiplicarPorEscalar lambda fs
+
+
+lambdaPorFila  :: Integer ->  [Integer] -> [Integer]
+lambdaPorFila _ [] = []
+lambdaPorFila lambda (x:xs) = lambda * x : lambdaPorFila lambda xs
