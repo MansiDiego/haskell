@@ -1,0 +1,1 @@
+#iterar una lista usando for i in range() for indice in range(len(s)), Lo que estamos haciendo es decirle al for que su indice llega hasta la longitud de s
