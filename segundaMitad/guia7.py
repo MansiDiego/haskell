@@ -57,3 +57,84 @@ def perteneceBis(s:list[int], e:int)-> bool:
     return False
 
 print(perteneceBis([9,8,7,6], 9))
+
+
+#EJERCICIO 2
+#devuelve true si y solo si e divide a algun elemento de s
+def divide_a_todos(s:list[int], e:int)-> bool:
+    
+    for elemento in s:
+        if elemento % e != 0:
+            return False
+        
+    if len(s) == 0:
+        return False
+    
+    return True 
+        
+print(divide_a_todos([2,4,6,8,10], 2))        
+        
+#EJERCICIO 3
+def suma_total(s:list[int])-> int:
+    contador = 0
+    longitud = len(s)
+    suma = 0
+    
+    while contador < longitud:          #voy a ir aumentando el contador por cada iteración, hasta llegar a la longitud de s y que corte ahí
+        suma = suma + s[contador]       #Arranco desde 0, y digo sumame el elemento en posicion s[0], hago lo mismo para el elemento en posicion s[1]... asi sucesivamente
+        contador = contador + 1
+        
+    return suma
+
+print(suma_total([10,20,30]))
+
+#EJERCICIO 3'BIS con un for
+def sumas(s:list[int])->int:
+    sumat = 0
+    for elemento in s:
+        sumat = sumat + elemento #CONSULTAR POR QUÉ ESTOY MODIFICANDO UN BLOQUE DENTRO DE LA IDENTACION, ES DECIR LO MODIFIQUE EN UN FOR, Y SE MODIFICO AFUERA
+    return sumat    
+
+print(sumas([1,2,3]))
+
+#EJERCICIO 4
+def maximo(s:list[int])-> int:
+    maxim = s[0]
+
+    for elemento in s:
+        if  elemento >= maxim: #Lo que estoy haciendo es; primer elemento es >= que primer elemento? Si!, se fija con el 2do, 2do elemento es >=1? ese res = maxim, luego compara el 3ero con el maxim y se queda con el maxim, y asi sucesivamente      
+            maxim = elemento
+    return maxim
+        
+print(maximo([1,2,7,3,4,11]))
+
+#EJERCICIO 4 BIS con un While;
+def maxBis(s:list[int])-> int:
+    maximo_elemento = s[0]
+    longitud = len(s)
+    contador = 0
+    
+    while contador < longitud: #Para que se deje de ejecutar este bloque de codigo cuando el indice supere la cantidad de elementos de la secuencia
+        if s[contador] >= maximo_elemento:
+            maximo_elemento = s[contador]        
+        contador +=1
+        
+    return maximo_elemento
+
+print(maxBis([1,2,3,9,1,11]))
+
+
+#EJERCICIO 5;
+def minimo(s:list[int])->int:
+    minimo = s[0]
+    
+    for elemento in s:
+        if elemento <= minimo:
+            minimo = elemento
+            
+    return minimo
+
+print(minimo([1,2,3,4,1,3]))
+
+
+#EJERCICIO 6;
