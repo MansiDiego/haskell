@@ -413,32 +413,3 @@ def digitos_impares_por_numero(x:int)-> int:
 
 #print(cantidad_digitos_impares([57, 2383, 812, 246]))   #deberia devolver 5
 
-##EJERCICIO 2##;
-#tipo inout
-def cero_en_posición_pares_1(s:list[int])->None:
-    for contador in range(0,len(s)):
-        if contador % 2 == 0:
-            s[contador] = 0
-    
-mi_lista = [1,2,3,4,5,1]
-cero_en_posición_pares_1(mi_lista)
-print(mi_lista)
-
-
-
-#tipo in
-def cero_en_posicion_pares_2(s:list[int])->list[int]:
-    res = []
-    for indice in range(0,len(s)):
-        if indice % 2 == 0:
-            res += [0] 
-        else: 
-            res += [s[indice]]
-    return res
-
-
-#mi_lista2 = [1,2,3,4,5,6]
-#print(cero_en_posicion_pares_2(mi_lista2))#PAKSA
-
-
-#print(cero_en_posicion_pares_1([2]))

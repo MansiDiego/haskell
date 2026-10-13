@@ -22,3 +22,6 @@
 #funcion aportada por el modulo math; "sqrt" me devuelve la raiz cuadrada del valor que le pase por argumento, por ejemplo: math.sqrt(9) = 3.0 #obs: devuelve un float
 #funcion aportada por el modulo math; "floor" redondea para abajo, recibe un valor y redondea a un entero pero "al izquierdo en la recta numerica" ej; math.floor(3.5) = 3 obs; math.floor(-3.5) = -4
 
+##TUPLAS:
+#SU SIGNATURA SE DEFINE DE LA SIGUIENTE MANERA; "tupla_random: tuple[tipo de dato, tipo de dato]" para seleccionar un elemento de la tupla lo mas practico es renombrar las posiciones de la tupla de la siguiente forma:
+# peso, nombre = tupla_random (entonces lo que hicimos ahí fue decirle a la tupla, okey el primer tipo de dato de la tupla es peso, y el segundo es nombre, entonces cuando use sus nombres voy a hacer referencia a esos valores almacenados en esas posiciones)
