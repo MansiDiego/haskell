@@ -298,3 +298,19 @@ apilada_l1 = aplilar(l1)
 apilada_l2 = aplilar(l2)
 intercalada = intercalar(apilada_l1, apilada_l2)
 print(intercalada.queue)
+
+##
+#COLAS
+##
+#1;
+def generar_nros_al_azar(cantidad:int, desde:int, hasta:int)-> Queue:
+    q = Queue()
+    contador = 0
+    while contador < cantidad:
+        elemento = random.randint(desde, hasta) 
+        contador += 1
+        q.put(elemento) #estoy encolando elementos
+    return q
+
+colimba = generar_nros_al_azar(5, 0, 21)
+print(colimba.queue)
