@@ -314,3 +314,85 @@ def generar_nros_al_azar(cantidad:int, desde:int, hasta:int)-> Queue:
 
 colimba = generar_nros_al_azar(5, 0, 21)
 print(colimba.queue)
+
+
+#2;
+def cantidad_de_elementos(c:Queue)->int:
+    copia = Queue()
+    contador :int = 0
+    while not c.empty():
+        elemento  = c.get()
+        copia.put(elemento)
+        contador += 1
+
+    while not copia.empty():
+        elemento = copia.get()
+        c.put(elemento)
+
+    return contador
+
+co = Queue()
+for i in range (5):
+    co.put(i)
+
+# ver = cantidad_de_elementos(co)
+# print(ver)
+print(co.queue)
+
+
+
+#3
+def buscar_el_maximo_colas(c:Queue)->int:
+    copia = Queue()
+    primero = c.get()
+    copia.put(primero) #aca esta la primer persona de la fila
+    el_mayor = primero
+
+    while not c.empty():
+        clientes = c.get()
+        copia.put(clientes)
+
+        if el_mayor <= clientes:
+            el_mayor = clientes 
+
+    while not copia.empty():
+        cliente = copia.get()
+        c.put(cliente)
+
+    return el_mayor
+
+print(buscar_el_maximo_colas(co))
+print(co.queue)
+
+
+
+#4
+def buscar_nota_minima(c:Queue[tuple[str, int]]) -> tuple [str, int]:
+    copia = Queue()
+    primer_tupla = c.get()
+    materia, nota_minima = primer_tupla
+    copia.put(primer_tupla)
+
+    #desencolo y voy comparando las notas
+    while not c.empty():
+       tupla_materia_Y_nota = c.get()
+       materia, nota = tupla_materia_Y_nota
+       copia.put(tupla_materia_Y_nota)
+
+       if nota <= nota_minima:
+            nota_minima = nota
+            tupla_correcta = materia, nota
+
+    #la dejo como estaba
+    while not copia.empty():
+        tupla_materia_y_nota = copia.get()
+        c.put(tupla_materia_y_nota)
+
+    return tupla_correcta
+
+cflex = Queue()
+cflex.put(("algoritmos", 10))
+cflex.put(("algebra", 5))
+cflex.put(("termodinamica", 7))
+tupla_menor = buscar_nota_minima(cflex)
+print(tupla_menor)#devuelve la tupla que tiene la nota minima
