@@ -1,4 +1,8 @@
 import unittest
+import random
+from queue import LifoQueue as Pila #importa lifoqueue y le asigna el alias pila
+from queue import Queue #del modulo queue asignamos la cola como "Queue"
+
 
 from labo import es_multiplo_de, doble_si_es_par, farenheit_a_celsius, suma_total_biss, pertenece_version_1, pertenece_version_2, pertenece_version_3
 
@@ -86,6 +90,46 @@ class test_pertenece_version_3(unittest.TestCase):
         resultado_obtenido = pertenece_version_3([1,2,3], 4)
         resultado_esperado = False
         self.assertEqual(resultado_obtenido, resultado_obtenido)
+
+#19/10, arranco con casos de test de la p7 ejercicio 6.4
+
+
+#ejercicio 2.13
+def armar_secuencia_bingo():
+    res = []
+    q = Queue()
+    while contador <= 99:
+        numeros = random.randint(0, 99)
+        res.append(numeros)
+        q.put(numeros)
+        contador += 1
+    return q
+
+def jugar_carton_de_bingo(carton: list[int], bolillero:Queue)->int:
+    minimas_jugadas = 0
+    validos = 0
+    for numeros in bolillero:
+        for numeros_del_carton in carton:
+            if numeros_del_carton == numeros:
+                minimas_jugadas += 1
+                validos += 1
+                if len(carton) == len(validos):
+                    return minimas_jugadas
+            else:
+                minimas_jugadas += 1
+    return minimas_jugadas      
+
+#cargo el bolillero
+bolillero_a = Queue()
+for i in range(99):
+    valor = random.randint
+    bolillero_a.put(valor)
+
+#print(jugar_carton_de_bingo())
+print(bolillero_a.queue)
+
+
+
 
 
 
