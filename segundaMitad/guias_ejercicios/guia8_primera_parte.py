@@ -396,3 +396,90 @@ cflex.put(("algebra", 5))
 cflex.put(("termodinamica", 7))
 tupla_menor = buscar_nota_minima(cflex)
 print(tupla_menor)#devuelve la tupla que tiene la nota minima
+
+
+
+#12
+#la idea es que si c1= [1,2,3] y c2= [7,5,4] entonces intercalar = [1,7,2,5,3,4]
+fila_chango = Queue()
+for i in range(1,4,1):
+    fila_chango.put(i)
+fila_carfour = Queue()
+fila_carfour.put(7)
+fila_carfour.put(5)
+fila_carfour.put(4)
+
+
+def intercalar(c1:Queue, c2:Queue)-> Queue:
+    copia_c1 : Queue = Queue()
+    copia_c2 : Queue = Queue()
+    intercalada : Queue = Queue()
+    
+    while not c1.empty() and not c2.empty():
+        desencolar_c2 = c2.get()
+        desencolar_c1 = c1.get()
+        intercalada.put(desencolar_c1)
+        intercalada.put(desencolar_c2)
+        copia_c2.put(desencolar_c2)
+        copia_c1.put(desencolar_c1)
+
+    while not copia_c1.empty() and not copia_c2.empty():
+        desencolar_copia_c1 = copia_c1.get()
+        desencolar_copia_c2 = copia_c2.get()
+        c1.put(desencolar_copia_c1)
+        c2.put(desencolar_copia_c2)
+
+    return intercalada
+
+#recordar que la estructura de datos de una cola sigue el patron "fifo" first in, first out
+# una_y_una = intercalar(fila_chango, fila_carfour)
+# print(una_y_una.queue)
+# print(fila_carfour.queue)
+
+
+
+#13;
+#bingo
+def armar_secuencia_de_bingo()-> Queue:
+    contador : int = 0
+    c : Queue = Queue()
+    carton_testing = []
+    while contador <= 99:
+        numero_aleatorio = random.randint(0, 99)
+        if numero_aleatorio not in carton_testing:
+            c.put(numero_aleatorio)
+            carton_testing.append(numero_aleatorio)
+            contador += 1
+
+    return c
+
+# def armar_carton_de_bingo()-> Queue:
+#     contador : int = 1
+#     c : Queue = Queue()
+#     carton_testing = []
+#     while contador <= 12:
+#         numero_aleatorio = random.randint(0, 99)
+#         if numero_aleatorio not in carton_testing:
+#             c.put(numero_aleatorio)
+#             carton_testing.append(numero_aleatorio)
+#             contador += 1
+
+#     return c
+
+
+
+bolillero = armar_secuencia_de_bingo()
+# carton = armar_carton_de_bingo()
+
+def aux()-> list[int]:
+    contador : int = 1
+    salida = []
+    
+    while contador <=12:
+        numeros_aleatorios = random.randint(0,99)
+        if numeros_aleatorios not in salida:
+            salida.append(numeros_aleatorios)
+            contador += 1
+    return salida
+
+#def jugar_carton_de_bingo(carton_bingo: list[int], bolillero_bingo: Queue[int])->int:
