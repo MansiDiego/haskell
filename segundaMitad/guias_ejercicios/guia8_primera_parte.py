@@ -521,3 +521,33 @@ cola_de_pacientes.put((4, "pedrito", "gastronterologo"))
 # print(cola_de_pacientes.queue)
 
 ##--15--##
+def entidad(c: Queue)-> Queue[tuple[str, int, bool, bool]]:
+    resto = Queue()
+    cola_de_banco_por_prioridad = Queue()
+    cola_de_banco_por_preferencia = Queue()
+    cola_de_banco_ordenada = Queue()
+
+    while not c.empty():
+        elemento = c.get()
+        nombre, edad, preferencia, prioridad = elemento
+        if prioridad:
+            cola_de_banco_por_prioridad.put(elemento)
+        elif preferencia:
+            cola_de_banco_por_preferencia.put(elemento)
+        else:
+            resto.put(elemento)
+
+    while not cola_de_banco_por_prioridad.empty():
+        persona = cola_de_banco_por_prioridad.get()    
+        cola_de_banco_ordenada.put(persona)
+
+    while not cola_de_banco_por_preferencia.empty():
+        persona = cola_de_banco_por_preferencia.get()
+        cola_de_banco_ordenada.put(persona)
+
+    while not resto.empty():
+        persona = resto.get()
+        cola_de_banco_ordenada.put(persona)
+
+    return cola_de_banco_ordenada
+
