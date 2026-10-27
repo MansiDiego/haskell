@@ -439,7 +439,8 @@ def intercalar(c1:Queue, c2:Queue)-> Queue:
 
 
 #13;
-#bingo
+
+
 def armar_secuencia_de_bingo()-> Queue:
     contador : int = 0
     c : Queue = Queue()
@@ -453,25 +454,11 @@ def armar_secuencia_de_bingo()-> Queue:
 
     return c
 
-# def armar_carton_de_bingo()-> Queue:
-#     contador : int = 1
-#     c : Queue = Queue()
-#     carton_testing = []
-#     while contador <= 12:
-#         numero_aleatorio = random.randint(0, 99)
-#         if numero_aleatorio not in carton_testing:
-#             c.put(numero_aleatorio)
-#             carton_testing.append(numero_aleatorio)
-#             contador += 1
-
-#     return c
-
-
 
 bolillero = armar_secuencia_de_bingo()
 # carton = armar_carton_de_bingo()
 
-def aux()-> list[int]:
+def carton_bingoo()-> list[int]:
     contador : int = 1
     salida = []
     
@@ -482,4 +469,55 @@ def aux()-> list[int]:
             contador += 1
     return salida
 
-#def jugar_carton_de_bingo(carton_bingo: list[int], bolillero_bingo: Queue[int])->int:
+
+
+def jugar_carton_de_bingo(carton_bingo: list[int], bolillero_bingo: Queue[int])->int:
+
+    cantidad_minima_de_jugadas :int = 0
+    copia_carton : list[int] = []
+    
+    while len(copia_carton) < 12:
+        primero_elemento = bolillero_bingo.get()
+
+        #dado que no tengo elementos repetidos puedo implementarlo de esta manera
+        if primero_elemento in carton_bingo: 
+            copia_carton.append(primero_elemento)
+            
+        cantidad_minima_de_jugadas += 1
+
+    return cantidad_minima_de_jugadas
+
+# primer_carton = carton_bingoo()
+# primer_bolillero = armar_secuencia_de_bingo()
+# cantidad_de_jugadas_minimas_para_la_primer_prueba = jugar_carton_de_bingo(primer_carton, primer_bolillero)
+# print(cantidad_de_jugadas_minimas_para_la_primer_prueba)
+
+#EJERCICIO 14:
+#la entrada es una cola de tuplas
+def pacientes_urgentes(c: Queue[(int, str, str)])-> int:
+    cantidad_de_pacientes_urgentes : int = 0
+    copia_c = Queue()
+    
+    while not c.empty():
+        paciente = c.get()
+        prioridad, nombre, especialidad = paciente #lo tengo que ir renombrando, ya que los diferentes elementos de la cola son distintos pacientes con distintos valores(urgencia,nombres, especialdiad)
+        if prioridad <= 4:
+            cantidad_de_pacientes_urgentes += 1
+        copia_c.put(paciente)
+
+    while not copia_c.empty():
+        paciente = copia_c.get()
+        c.put(paciente) #para dejar la cola, tal cual como estaba, ya que el arg es de tipo in
+
+    return cantidad_de_pacientes_urgentes
+
+cola_de_pacientes = Queue()
+cola_de_pacientes.put((1, "pedro", "cardiologo"))
+cola_de_pacientes.put((7, "rodolfo", "clinico"))
+cola_de_pacientes.put((4, "pedrito", "gastronterologo"))
+
+# cuantos = pacientes_urgentes(cola_de_pacientes)
+# print(cuantos)
+# print(cola_de_pacientes.queue)
+
+##--15--##
