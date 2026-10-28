@@ -1,3 +1,4 @@
+##Pilas y Colas##
 import random 
 from queue import LifoQueue as Pila #importa lifoqueue y le asigna el alias pila
 from queue import Queue #del modulo queue asignamos la cola como "Queue"
@@ -550,4 +551,6 @@ def entidad(c: Queue)-> Queue[tuple[str, int, bool, bool]]:
         cola_de_banco_ordenada.put(persona)
 
     return cola_de_banco_ordenada
+
+
 
