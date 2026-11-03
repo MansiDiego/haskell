@@ -94,3 +94,64 @@ def actualizar_stock(inventario: dict[str, dict[str, float | int]], nombre: str,
 
 def actualizar_precio(inventario: dict[str, dict[str, float | int]], nombre: str, precio_valor: float):
     inventario[nombre]["precio"] = precio_valor #actualizamos la clave "precio" con el argumento precio
+
+def calcular_valor_inventario(invetario: dict[str, dict[str, int | float]])-> float:
+    #quiero devolver el precio de cada producto, multiplicado por su cantidad, la suma de todos los productos
+    suma_total_inventario : int = 0
+    for producto in invetario.items():
+        #donde el str no lo uso porque estoy haciendo la suma global de todos los elementos dentro del diccionario
+        str_producto, dict_producto  = producto
+        suma_total_inventario += dict_producto["precio"] * dict_producto["cantidad"]
+
+    return suma_total_inventario
+
+inventario = {}
+agregar_producto(inventario, "Camisa", 20.0, 50)
+agregar_producto(inventario, "Pantalon", 30.0, 30)
+actualizar_stock(inventario, "Camisa", 10)
+valor_total = calcular_valor_inventario(inventario)
+print("Valor total del inventario:", valor_total) 
+
+
+
+
+##ARCHIVOS, ULTIMA UNIDAD##
+#19.1
+def contar_lineas(nombre_del_archivo: str)-> int:
+    res : int = 0
+    with open(nombre_del_archivo, "r") as archivo:
+        total_lineas = archivo.readlines() #use el metodo readlines que mete cada str de cada linea en una lista, y al final use len para contar cuantos str tenia
+        res = len(total_lineas)
+
+    return res
+
+# resultado = contar_lineas("data2.txt")
+# print(resultado)#deberia devolverme 3 lineas
+
+
+#19.2
+def existe_palabra(nombre_del_archivo: str, palabra: str)-> bool:
+    res = False
+    with open(nombre_del_archivo, "r") as archivo:
+        lista_palabras = archivo.readlines() #meti todas las palabras a una lista, y luego recorri la lista
+        for palabras in lista_palabras:
+            if palabra == palabras:
+                res =  True
+    return res
+
+# resultado = existe_palabra("data2.txt", "diego")
+# print(resultado) 
+
+
+#19.3
+def cantidad_de_apariciones(nombre_del_archivo: str, palabra:str)-> int:
+    res : int = 0
+    with open(nombre_del_archivo, "r") as archivo:
+        lista_de_palabras = archivo.readlines()
+        for palabras in lista_de_palabras:
+            if palabras == palabra:
+                res += 1
+    return res
+
+resultado = cantidad_de_apariciones("data2.txt", "diego")
+print(resultado) #deberia devolverme 
