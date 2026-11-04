@@ -149,9 +149,84 @@ def cantidad_de_apariciones(nombre_del_archivo: str, palabra:str)-> int:
     with open(nombre_del_archivo, "r") as archivo:
         lista_de_palabras = archivo.readlines()
         for palabras in lista_de_palabras:
-            if palabras == palabra:
-                res += 1
+            for p in palabras.split(): #debía agregar esto, ya que sino la palabra me queda como [diego\n sdajjsda\n] por lo tanto nunca iba a coincidir con "diego" solo a secas
+                if p == palabra:
+                    res += 1
     return res
 
-resultado = cantidad_de_apariciones("data2.txt", "diego")
-print(resultado) #deberia devolverme 
+# resultado = cantidad_de_apariciones("data2.txt", "diego")
+# print(resultado) #deberia devolverme 
+
+#20.0
+def agrupar_por_longitud(nombre_Del_archivo: str)-> dict[int, int]:
+    diccionario = {}
+    with open(nombre_Del_archivo, "r") as archivo:
+        lista_de_palabras = archivo.readlines()
+        for palabras in lista_de_palabras:
+            for p in palabras.split(): #me quita los 
+                longitud = len(p)
+                if longitud in diccionario.keys(): #si la clave que seria la longitud de la palabra, ya esta en el dict entonces agregamos una mas
+                    cantidad += 1
+                    diccionario[longitud] = cantidad
+                else:
+                    cantidad = 1
+                    diccionario[longitud] = cantidad #sino existe, creamos la lista
+    return diccionario.items()
+
+# resultado_agrupar_por_longitud = agrupar_por_longitud("data1.txt")
+# print(resultado_agrupar_por_longitud) #me devuelve un diccionario con 3 claves, donde cada clave es la longitud de la palabra, y el valor es la cantidad de palabras con misma longitud
+
+
+
+#21
+# problema la palabra mas frecuente (in nombre archivo: seq⟨Char⟩) : seq⟨Char⟩ {
+# requiere: {nombre archivo es un archivo existente y accesible que tiene, por lo menos, una palabra}
+# asegura: {res es una palabra que aparece en el archivo nombre archivo}
+# asegura: {No hay ninguna palabra contenida en el archivo nombre archivo que aparezca mas veces que la palabra res }
+# }
+
+def la_palabra_mas_frecuente(nombre_del_archivo: str) -> str:
+    diccionario_palabras : dict = {}
+    valor_maximo : int = 0
+    with open(nombre_del_archivo, "r") as archivo:
+        lista_palabras = archivo.readlines()
+        for palabras in lista_palabras:
+            for p in palabras.split():
+                if p in diccionario_palabras.keys():
+                    cantidad += 1 
+                    diccionario_palabras[p] = cantidad
+                else:
+                    cantidad = 1
+                    diccionario_palabras[p] = cantidad
+    #ya tengo las palabras en un diccionario, donde la clave es p y el valor es la cantidad, ahora quiero saber cual es el valor mas grande
+    
+    #uso un for dentro de un diccionario para recorrer todos los pares claves valor, de modo tal que voy fijandome cual es el valor maximo
+    for clave, valor in diccionario_palabras.items():
+        valor_actual = valor
+        if valor_actual >= valor_maximo:
+            valor_maximo = valor_actual
+            la_mas_frecuente = clave
+
+    return la_mas_frecuente
+
+
+# ress = la_palabra_mas_frecuente("data1.txt")
+# print(ress) #deberia devolverme mateo
+
+
+##22##
+def clonar_sin_comentarios(nombre_archivo_entrada: str, nombre_archivo_salida: str):
+
+    lista_sin_comentarios = []
+    with open(nombre_archivo_entrada, "r") as archivo:
+        lista_palabras = archivo.readlines()
+        
+        for palabras in lista_palabras:#recorro todas las lineas
+                    if palabras[0] != "#": #si encuentro un comentario entonces paso a la siguiente linea
+                        lista_sin_comentarios.append(palabras)#meto todas las palabras en una lista
+
+    
+    with open(nombre_archivo_salida, "w") as archivo:
+            archivo.writelines(lista_sin_comentarios) 
+    
+res_clonar_sin_coments = clonar_sin_comentarios("data1.txt", "data2.txt")
