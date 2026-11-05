@@ -71,3 +71,27 @@ cola_prueba.put(("mateo", "tarjeta", 13))
 
 
 ##Ejercicio 3 (valor = 2.5)##
+#todas las filas de a tienen la misma longitud
+#coll >=0 y coll<len(primer fila)
+#col2 >=0 y col2<len(primer fila)
+#coll y col2 son distintos
+
+def ejercicio3(m: list[list[int]], col1: int, col2:int):#es un procedimiento
+    ultima_fila : int = len(m) - 1 #es un indice
+    primer_elemento : int  = extrae_el_elemento_de_fila_en_columna_indice(m[ultima_fila], col1)
+    segundo_elemento : int = extrae_el_elemento_de_fila_en_columna_indice(m[ultima_fila], col2)
+    for filas in m:
+        filas[col1] = segundo_elemento
+        filas[col2] = primer_elemento
+
+#Importante el indice no debe estar fuera de rango
+def extrae_el_elemento_de_fila_en_columna_indice(fila:list[int], indice:int)-> int:
+    longitud = len(fila)
+
+    for i in range(longitud):
+        if i== indice:
+            return fila[indice]
+
+matriz_prueba = [[1,2,3],[40,50,60], [-7,-8,-9]]
+ejercicio3(matriz_prueba, 1, 2)
+print(matriz_prueba)
