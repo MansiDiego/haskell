@@ -95,3 +95,27 @@ def extrae_el_elemento_de_fila_en_columna_indice(fila:list[int], indice:int)-> i
 matriz_prueba = [[1,2,3],[40,50,60], [-7,-8,-9]]
 ejercicio3(matriz_prueba, 1, 2)
 print(matriz_prueba)
+
+
+##ejercicio4
+#clave = nombre de las personas
+#valor = localidades donde viven
+#args: censo 1 y 2 son tipo in
+def mantuvieron_residencia(censo1: dict[str, str], censo2: dict[str, str])-> dict[str, int]:
+    res : dict[str, int] = {}
+
+    
+    for ciudado1, localidad1  in censo1.items():
+        for ciudado2, localidad2 in censo2.items():
+            if ciudado1 == ciudado2 and localidad1 == localidad2 and localidad1 not in res.keys():
+                res[localidad1] = 1
+            elif ciudado1 == ciudado2 and localidad1 == localidad2:
+                valor_viejo = res[localidad1]
+                res[localidad1] = valor_viejo + 1
+    return res
+
+resultado_ejer4 = mantuvieron_residencia({'Juan': 'Merlo', 'Ana': 'Merlo', 'pepe':'Merlo'}, {'Juan': 'Castelar', 'Ana': 'Merlo', 'pepe':'Merlo'})
+print(resultado_ejer4)
+
+#5 choice = opc(c)
+#6 choice = 1
