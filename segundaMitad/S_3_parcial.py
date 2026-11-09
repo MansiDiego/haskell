@@ -109,25 +109,81 @@ def nota_por_examen(s:list[bool])-> int:
 
 
 ##3##
-#es procedimiento, no tiene retorno
-def cambiar_matriz(A: list[list[int]]) -> None:
-    ultimo = A[-1][-1]
+#asegura: para todo m[i][j] != m[i][j]M@pre
 
-    for i in range(len(A) - 1, -1, -1):
-        for j in range(len(A[i]) - 1, -1, -1):
+def modificar_matriz(m:list[list[int]]):
+    ultimo_elemento = m[-1][-1]
+    ultima_fila     = m[-1]
+    hasta : int  = -1
+    paso : int   = -1
+    inicio : int = len(ultima_fila) - 1
 
-            if i == 0 and j == 0:
-                A[i][j] = ultimo
-            elif j == 0:
-                A[i][j] = A[i - 1][-1]
+    for fila in range(inicio, hasta, paso):
+        for columnas in range( inicio, -1, -1):
+            
+            if columnas == 0 and fila == 0:
+                m[0][0] = ultimo_elemento
+
+            elif columnas == 0:
+                m[fila][columnas] = m[fila - 1][-1] 
+
             else:
-                A[i][j] = A[i][j - 1]
+                m[fila][columnas] = m[fila][columnas - 1]#se me va de indice
 
-
-matriz_random = ([[1,2,3],[4,5,6],[7,8,9]])
-cambiar_matriz(matriz_random)
-print(matriz_random)
+mattriz_random = [[1,2,3], [4,5,6], [7,8,9]]
+modificar_matriz(mattriz_random)
+print(mattriz_random)
 
 
 ##falta el 4 y repasar el 3
+def palabras_por_vocales(palabra: str)-> dict[int, int]:
+    res : dict[int, int]= {}
+    cantidad_de_vocales_por_palabra : int = 0
+    vocales : str = "aeiouAEIOU"
+    palabra_limpia : str = espacios_igual_a_1(palabra) #tiene un solo espacio
+
+    for caracteres in palabra_limpia:  
+        if caracteres in vocales:
+            cantidad_de_vocales_por_palabra += 1
+
+        #termino la palabra, me fijo la cantidad de vocales, y la agrego a donde corresponde
+        elif caracteres ==" ":
+        #esto seria en el caso de que la clave(que es la cantidad de vocales que tiene una palabra random) existe en dict
+            if cantidad_de_vocales_por_palabra not in res.keys():
+                res[cantidad_de_vocales_por_palabra] = 1
+
+        # en el caso de que la clave no exista, creamos la clave y le agregamos el valor.
+            elif cantidad_de_vocales_por_palabra in res.keys():
+                cantidad_de_palabras = res[cantidad_de_vocales_por_palabra] 
+                res[cantidad_de_vocales_por_palabra] = cantidad_de_palabras + 1
+
+            cantidad_de_vocales_por_palabra = 0 #para contar nuevamente la cantidad de vocales que tiene la nueva palabra
+
+    #para la ultima palabra, que no finaliza con un espacio
+    if cantidad_de_vocales_por_palabra not in res.keys():
+                res[cantidad_de_vocales_por_palabra] = 1
+
+    elif cantidad_de_vocales_por_palabra in res.keys():
+                cantidad_de_palabras = res[cantidad_de_vocales_por_palabra] 
+                res[cantidad_de_vocales_por_palabra] = cantidad_de_palabras + 1
+
+    return res
+
+
+#algoritmo para sacar espacios, bello
+def espacios_igual_a_1(palabra:str)-> str:
+    res =""
+    for caracteres in palabra:
+        if caracteres != " ":
+            res += caracteres
+        
+        elif caracteres == " " and res[-1]!=" ":
+            res += caracteres
+
+        else:
+            pass
+    return res
+
+##observaciones: el ejercicio de pilas es muy accesible y el de diccionarios tambien, estrategia, encarar primero esos ejercicios, y luego considerar matrices antes que "subsecuenias"
+
 
