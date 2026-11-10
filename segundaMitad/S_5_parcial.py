@@ -98,9 +98,6 @@ def fila_capicua(s:list[int])-> bool:
 # print(resultado_4)
 
 
-
-
-
 #3 3 puntos; Repasar
 def frecuencia_posiciones_por_caballo(caballos: list[str], carreras: dict[str, list[str]]) -> dict[str, list[int]]:
     res = {}
@@ -111,12 +108,12 @@ def frecuencia_posiciones_por_caballo(caballos: list[str], carreras: dict[str, l
 
     # Recorremos las carreras
     for carrera in carreras:
-        posiciones = carreras[carrera]
+        posiciones = carreras[carrera] #seria para cada clave, obtengo su valor, que su valor es una lista de posiciones[]
 
         # Recorremos las posiciones de cada carrera
         for i in range(len(posiciones)):
             caballo = posiciones[i]
-            res[caballo][i] += 1
+            res[caballo][i] += 1 #me voy parando en las claves de cada caballo particular, en su indice correspondiente y agrego el valor
 
     return res
 
